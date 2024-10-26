@@ -1,0 +1,35 @@
+{
+    "windows": {
+        "chrome": {
+            "bookmarks_file": "~/AppData/Local/Chrome/User Data/Default/bookmarks"
+        },
+        "vivaldi": {
+            "bookmarks_file": "~/AppData/Local/Vivaldi/User Data/Default/bookmarks"
+        },
+        "edge": {
+            "bookmarks_file": "~/AppData/Local/Microsoft/Edge/User Data/Default"
+        }
+    },
+    "mac": {
+        "chrome": {
+            "bookmarks_file": "~/Library/Application Support/Google/Chrome/Default/Bookmarks"
+        },
+        "vivaldi": {
+            "bookmarks_file": "~/Library/Application Support/Google/Vivaldi/Default/Bookmarks"
+        },
+        "edge": {
+            "bookmarks_file": "~/Library/Application Support/Microsoft Edge/Vivaldi/Default/Bookmarks"
+        }
+    },
+    "linux": {
+        "chrome": {
+            "bookmarks_file": "~/.config/google-chrome/Default/Bookmarks"
+        },
+        "vivaldi": {
+            "bookmarks_file": "~/.config/vivaldi/Default/Bookmarks"
+        },
+        "edge": {
+            "bookmarks_file": "~/.config/microsoft-edge/Default/Bookmarks"
+        }
+    }
+}
