@@ -50,11 +50,10 @@ class BookmarksFile:
 
         if dest_path.exists():
             if not overwrite:
-                log.warning(
-                    f"Destination exists: {dest_path}. overwrite=False, skipping file copy."
+                # yield
+                raise FileExistsError(
+                    f"File '{dest_path}' already exists. Skipping file copy."
                 )
-
-                return
             else:
                 log.warning(
                     f"Destination exists: {dest_path}. overwrite=True, continuing anyway."
@@ -63,6 +62,14 @@ class BookmarksFile:
         if not dest_path.parent.exists():
             try:
                 dest_path.mkdir(parents=True, exist_ok=True)
+            except FileNotFoundError as fnf:
+                log.warning(f"Could not find file '{dest_path}'.")
+                yield
+            except PermissionError as perm_err:
+                log.error(
+                    f"Permission denied copying file '{src_path}' to '{dest_path}'. Details: {exc}"
+                )
+                raise perm_err
             except Exception as exc:
                 msg = (
                     f"({type(exc)}) Error creation destination directory '{dest_path}'"
@@ -76,6 +83,11 @@ class BookmarksFile:
             shutil.copy2(src_path, dest_path)
 
             yield
+        except PermissionError as perm_exc:
+            log.error(
+                f"Permission denied copying file '{src_path}' to destination '{dest_path}'. Details: {perm_exc}"
+            )
+            raise
         except Exception as exc:
             msg = f"({type(exc)}) An error occurred while copying file '{src_path}' to '{dest_path}'. Details: {exc}"
             log.error(msg)
@@ -100,10 +112,15 @@ class BookmarksFile:
                     f"Successfully copied bookmarks file '{self.bookmarks_file}' to destination path '{backup_dest}'."
                 )
 
-                return True
+            return True
+        except PermissionError as perm_err:
+            # log.error("Permission denied copying bookmarks file.")
+            raise perm_err
+        except FileExistsError as file_exists:
+            raise file_exists
         except Exception as exc:
             msg = f"({type(exc)}) Failed copying bookmarks file."
-            log.error(msg)
+            # log.error(msg)
 
             raise exc
 

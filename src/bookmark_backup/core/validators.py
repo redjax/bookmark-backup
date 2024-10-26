@@ -22,6 +22,8 @@ def validate_browser(browser: str) -> str:
     valid_browsers = supported_browsers()
 
     if browser not in valid_browsers:
-        raise ValueError(f"Unsupported browser: {browser}")
+        raise ValueError(
+            f"Unsupported browser: {browser}. Must be one of {valid_browsers}"
+        )
 
     return browser
