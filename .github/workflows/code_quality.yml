@@ -1,0 +1,46 @@
+---
+name: Check code complexity
+run-name: ${{ github.actor }} | Running nox sessions to check code quality/complexity
+on:
+  push:
+    branches:
+      - dev
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - ".gitignore"
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - "docs/**"
+      - "*.md"
+      - ".gitignore"
+
+jobs:
+  ruff-lint:
+    name: python
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: 0.4.24
+
+      - name: Install the project
+        run: uv sync --all-extras --dev
+
+      - name: Check for dead code
+        run: uv run nox -s vulture-check
+        continue-on-error: true
+
+      - name: Check for code complexity
+        run: uv run nox -s radon-code-complexity
+        continue-on-error: true
+
+      - name: Check for code complexity (raw)
+        run: uv run nox -s radon-raw
+        continue-on-error: true
