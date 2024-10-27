@@ -202,3 +202,66 @@ def vulture_check(session: nox.Session):
 
     log.info("Checking code with vulture")
     session.run("vulture", "src/bookmark_backup", "--min-confidence", "100")
+
+
+@nox.session(name="radon-code-complexity", tags=["quality"])
+def radon_code_complexity(session: nox.Session):
+    session.install("radon")
+
+    log.info("Getting code complexity score")
+    session.run(
+        "radon",
+        "cc",
+        "src/bookmark_backup",
+        "-s",
+        "-a",
+        "--total-average",
+        "-nc",
+        # "-j",
+        # "-O",
+        # "radon_complexity_results.json",
+    )
+
+
+@nox.session(name="radon-raw", tags=["quality"])
+def radon_raw(session: nox.Session):
+    session.install("radon")
+
+    log.info("Running radon raw scan")
+    session.run(
+        "radon",
+        "raw",
+        "src/bookmark_backup",
+        "-s",
+        # "-j",
+        # "-O",
+        # "radon_raw_results.json"
+    )
+
+
+@nox.session(name="radon-maintainability", tags=["quality"])
+def radon_maintainability(session: nox.Session):
+    session.install("radon")
+
+    log.info("Running radon maintainability scan")
+    session.run(
+        "radon",
+        "mi",
+        "src/bookmark_backup",
+        "-n",
+        "C",
+        "-x",
+        "F",
+        "-s",
+        # "-j",
+        # "-O",
+        # "radon_maitinability_results.json",
+    )
+
+
+@nox.session(name="xenon", tags=["quality"])
+def xenon_scan(session: nox.Session):
+    session.install("xenon")
+
+    log.info("Scanning complexity with xenon")
+    session.run("xenon", "-b", "B", "-m", "C", "-a", "C", "src/red_utils")
