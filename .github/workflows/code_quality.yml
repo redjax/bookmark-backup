@@ -11,7 +11,7 @@ on:
       - ".gitignore"
   pull_request:
     branches:
-      - main
+      - dev
     paths-ignore:
       - "docs/**"
       - "*.md"
