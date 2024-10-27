@@ -8,7 +8,7 @@ requires-python = ">=3.11"
 dependencies = []
 
 [project.scripts]
-bookmark-backup = "bookmark_backup:main"
+bookmark-backup = "bookmark_backup.cli.cli_main:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -97,6 +97,4 @@ section-order = [
 ]
 
 [tool.uv]
-dev-dependencies = [
-    "nox>=2024.10.9",
-]
+dev-dependencies = ["nox>=2024.10.9"]
