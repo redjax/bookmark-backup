@@ -44,3 +44,7 @@ jobs:
       - name: Check for code complexity (raw)
         run: uv run nox -s radon-raw
         continue-on-error: true
+
+      - name: Check for code maintainability
+        run: uv run nox -s radon-maintainability
+        continue-on-error: true
