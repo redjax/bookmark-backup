@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 import logging
+import os
 from pathlib import Path
 import platform
-import os
 
 log = logging.getLogger(__name__)
 
@@ -11,6 +13,7 @@ def os_type() -> str:
 
     Returns:
         (str): "Windows", "Mac", or "Linux".
+
     """
     return platform.system()
 
@@ -20,6 +23,7 @@ def os_release() -> str | None:
 
     Returns:
         (str): The OS release name or version.
+
     """
     os_name = os_type()
 
@@ -64,6 +68,7 @@ def is_docker() -> bool:
 
     Returns:
         (bool): `True` if 'docker' line is found in file, else False.
+
     """
     if not Path("/proc/self/cgroup").exists():
         return False
@@ -83,6 +88,7 @@ def is_wsl() -> bool:
 
     Returns:
         (bool): `True` if running in WSL, else False.
+
     """
     if os_type() == "Linux":
         try:

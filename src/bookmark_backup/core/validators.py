@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 import logging
 from pathlib import Path
 
 from .constants import supported_browsers, supported_os_types
-
 
 def validate_os_type(os_type: str) -> str:
     os_type = os_type.lower()
@@ -11,7 +12,7 @@ def validate_os_type(os_type: str) -> str:
     if os_type in ["mac", "darwin", "macos", "mac os x"]:
         os_type = "mac"
 
-    if not os_type in valid_os_types:
+    if os_type not in valid_os_types:
         raise ValueError(f"Invalid OS type: {os_type}. Must be one of {valid_os_types}")
 
     return os_type

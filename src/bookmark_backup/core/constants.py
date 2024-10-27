@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 def supported_browsers() -> list[str]:
     return ["chrome", "edge", "vivaldi"]
 

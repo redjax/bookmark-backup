@@ -1,17 +1,18 @@
+from __future__ import annotations
+
 import logging
 from pathlib import Path
 
 log = logging.getLogger(__name__)
 
-from bookmark_backup.core import setup, detect_env
 from bookmark_backup import finder
+from bookmark_backup.core import detect_env, setup
 from bookmark_backup.domain.Bookmarks import (
     BookmarksFile,
-    VivaldiBookmarksFile,
     ChromeBookmarksFile,
     EdgeBookmarksFile,
+    VivaldiBookmarksFile,
 )
-
 
 def main():
     vivaldi_bookmarks = VivaldiBookmarksFile()

@@ -6,9 +6,9 @@ import logging
 import os
 from pathlib import Path
 import platform
+import shutil
 import sys
 import typing as t
-import shutil
 
 log = logging.getLogger(__name__)
 

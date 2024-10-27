@@ -1,16 +1,17 @@
-import logging
-import typing as t
-from pathlib import Path
-from dataclasses import field, dataclass
+from __future__ import annotations
+
 from contextlib import contextmanager
+from dataclasses import dataclass, field
+import logging
+from pathlib import Path
 import shutil
+import typing as t
 
 log: logging.Logger = logging.getLogger(__name__)
 
-from bookmark_backup.core.validators import validate_browser, validate_os_type
-from bookmark_backup.core import detect_env
 from bookmark_backup import finder
-
+from bookmark_backup.core import detect_env
+from bookmark_backup.core.validators import validate_browser, validate_os_type
 
 @dataclass
 class BookmarksFile:

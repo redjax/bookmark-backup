@@ -1,8 +1,10 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
 import logging
 import os
 from pathlib import Path
 from typing import List, Tuple
-from dataclasses import dataclass
 
 log = logging.getLogger(__name__)
 
@@ -53,6 +55,7 @@ class Finder:
 
         Returns:
             Tuple[List[Path], List[Path]]: Lists of matching files and directories.
+
         """
         matched_files = [file for file in self.files if text in file.name]
         matched_dirs = [dir for dir in self.dirs if text in dir.name]

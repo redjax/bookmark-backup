@@ -1,2 +1,4 @@
+from __future__ import annotations
+
 from .controllers import Finder
-from .methods import load_bookmarks_filepaths, get_browser_bookmarks_filepath
+from .methods import get_browser_bookmarks_filepath, load_bookmarks_filepaths

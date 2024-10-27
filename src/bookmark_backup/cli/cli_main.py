@@ -1,19 +1,20 @@
-import logging
+from __future__ import annotations
+
 import argparse
+import logging
 import sys
 
 log = logging.getLogger(__name__)
 
-from bookmark_backup.core.validators import validate_browser, validate_os_type
-from bookmark_backup.core import detect_env
 from bookmark_backup import finder
+from bookmark_backup.core import detect_env
+from bookmark_backup.core.validators import validate_browser, validate_os_type
 from bookmark_backup.domain.Bookmarks import (
     BookmarksFile,
-    EdgeBookmarksFile,
     ChromeBookmarksFile,
+    EdgeBookmarksFile,
     VivaldiBookmarksFile,
 )
-
 
 def backup(browser: str, dest: str, overwrite: bool):
     # Backup functionality (not yet implemented)
