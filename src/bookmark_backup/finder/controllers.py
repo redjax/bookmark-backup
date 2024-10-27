@@ -27,6 +27,9 @@ class Finder:
 
             return False
 
+        if traceback:
+            pass
+
         return True
 
     def crawl_directory(self) -> None:

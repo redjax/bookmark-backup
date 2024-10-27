@@ -194,3 +194,11 @@ def export_requirements(session: nox.Session, requirements_output_dir: Path):
         "-o",
         str(REQUIREMENTS_OUTPUT_DIR / "requirements.txt"),
     )
+
+
+@nox.session(name="vulture-check", tags=["quality"])
+def vulture_check(session: nox.Session):
+    session.install("vulture")
+
+    log.info("Checking code with vulture")
+    session.run("vulture", "src/bookmark_backup", "--min-confidence", "100")
