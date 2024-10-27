@@ -53,9 +53,37 @@ def backup(browser: str, dest: str, overwrite: bool):
         raise exc
 
 
-def restore(browser: str):
+def restore(browser: str, src: str):
     # Raise NotImplementedError as restore is not yet implemented
-    raise NotImplementedError("The restore functionality is not implemented yet.")
+    match browser:
+        case "vivaldi":
+            bookmarks = VivaldiBookmarksFile()
+        case "chrome":
+            bookmarks = ChromeBookmarksFile()
+        case "edge":
+            bookmarks = EdgeBookmarksFile()
+        case _:
+            raise ValueError(f"Invalid browser: {browser}.")
+
+    try:
+        bookmarks.restore_bookmarks_file(backup_src=src)
+        print(f"Restored [{browser}] bookmarks from file: {src}")
+
+        return True
+    except FileNotFoundError as fnf_err:
+        print(
+            f"[ERROR] Could not find [{browser}] bookmarks backup file '{src}' to restore."
+        )
+    except PermissionError as perm_err:
+        print(
+            f"[ERROR] Permission denied restoring [{browser}] bookmarks file from path: {src}. Details: {perm_err}"
+        )
+        sys.exit(1)
+    except Exception as exc:
+        msg = f"({type(exc)}) Error restoring [{browser}] bookmarks. Details: {exc}"
+        log.error(msg)
+
+        raise exc
 
 
 def check_inputs(browser: str):
@@ -64,6 +92,7 @@ def check_inputs(browser: str):
 
 
 def main(log_level: str = "CRITICAL"):
+    log_level = log_level.upper()
     logging.basicConfig(
         level=log_level.upper(),
         format="%(asctime)s | [%(levelname)s] | (%(name)s) > %(module)s.%(funcName)s:%(lineno)s|> %(message)s",
@@ -96,7 +125,12 @@ def main(log_level: str = "CRITICAL"):
 
     # 'restore' command
     restore_parser = subparsers.add_parser("restore", help="Restore browser bookmarks")
-    # No additional arguments for restore
+    restore_parser.add_argument(
+        "--src",
+        type=str,
+        required=True,
+        help="Source path for the backups file .json to restore",
+    )
 
     args = parser.parse_args()
 
@@ -106,7 +140,7 @@ def main(log_level: str = "CRITICAL"):
     if args.command == "backup":
         backup(browser=args.browser, dest=args.dest, overwrite=args.overwrite)
     elif args.command == "restore":
-        restore(browser=args.browser)
+        restore(browser=args.browser, src=args.src)
     else:
         print("Unknown command")
         sys.exit(1)

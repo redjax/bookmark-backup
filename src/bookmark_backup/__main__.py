@@ -5,12 +5,12 @@ log = logging.getLogger(__name__)
 from bookmark_backup.cli import cli_main
 
 
-def main(log_level: str = "INFO"):
-    log_level = log_level.upper()
+def main(log_level: str = "CRITICAL"):
+
     cli_main.main(log_level=log_level)
 
 
 if __name__ == "__main__":
-    log_level = "NOTSET"
+    log_level = "CRITICAL"
 
     main(log_level=log_level)

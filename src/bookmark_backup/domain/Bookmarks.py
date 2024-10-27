@@ -21,7 +21,7 @@ class BookmarksFile:
         self.browser: str = validate_browser(browser=self.browser)
         self.bookmarks_file: str = finder.get_browser_bookmarks_filepath(
             os_type=self.os_type, browser=self.browser
-        )
+        ).title()
 
     @property
     def bookmarks_file_exists(self) -> bool:
@@ -121,6 +121,61 @@ class BookmarksFile:
         except Exception as exc:
             msg = f"({type(exc)}) Failed copying bookmarks file."
             # log.error(msg)
+
+            raise exc
+
+    def restore_bookmarks_file(self, backup_src: str):
+        if backup_src is None:
+            raise ValueError(f"Must pass a destination path as backup_dest.")
+
+        backup_src = (
+            Path(str(backup_src)).expanduser()
+            if "~" in str(backup_src)
+            else Path(str(backup_src))
+        )
+
+        if not Path(str(backup_src)).exists:
+            raise FileNotFoundError(f"Could not find backup source file: {backup_src}")
+
+        bookmarks_bak = f"{self.bookmarks_file}.bak"
+
+        if self.bookmarks_file_exists:
+            print(f"Backing up existing [{self.browser}] bookmarks to .bak file.")
+            ## Copy existing file to .bak
+            try:
+                with self._safe_copy(dest=bookmarks_bak, overwrite=True):
+                    log.info(
+                        f"Successfully copied bookmarks file '{self.bookmarks_file}' to destination path '{bookmarks_bak}'."
+                    )
+
+            except PermissionError as perm_err:
+                # log.error("Permission denied copying bookmarks file.")
+                raise perm_err
+            except FileExistsError as file_exists:
+                raise file_exists
+            except Exception as exc:
+                msg = f"({type(exc)}) Failed copying bookmarks file."
+                # log.error(msg)
+
+                raise exc
+
+        print(f"Restoring [{self.browser}] bookmarks from file: {backup_src}")
+        ## Overwrite existing file
+        if self.bookmarks_file_exists:
+            try:
+                Path(str(self.bookmarks_file)).unlink()
+            except Exception as exc:
+                msg = f"({type(exc)}) Error removing existing bookmarks file '{self.bookmarks_file}'. Details: {exc}"
+                log.error(msg)
+
+                raise exc
+
+        print(f"Copying bookmarks from file '{backup_src}' to '{self.bookmarks_file}'")
+        try:
+            shutil.copy2(src=backup_src, dst=self.bookmarks_file)
+        except Exception as exc:
+            msg = f"({type(exc)}) Error restoring bookmarks from backup file '{backup_src}'. Details: {exc}"
+            log.error(msg)
 
             raise exc
 
