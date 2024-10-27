@@ -196,6 +196,11 @@ def export_requirements(session: nox.Session, requirements_output_dir: Path):
     )
 
 
+#######################
+# Code quality checks #
+#######################
+
+
 @nox.session(name="vulture-check", tags=["quality"])
 def vulture_check(session: nox.Session):
     session.install("vulture")
@@ -264,4 +269,4 @@ def xenon_scan(session: nox.Session):
     session.install("xenon")
 
     log.info("Scanning complexity with xenon")
-    session.run("xenon", "-b", "B", "-m", "C", "-a", "C", "src/red_utils")
+    session.run("xenon", "-b", "B", "-m", "C", "-a", "C", "src/bookmark_backup")
