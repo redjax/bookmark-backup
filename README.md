@@ -23,3 +23,9 @@ With `uv`:
 ```shell
 uv run bookmark-backup --help
 ```
+
+Backup Vivaldi bookmarks to your desktop
+
+```shell
+python -m bookmark_backup --browser vivaldi backup --dest ~/desktop/vivaldi_bookmarks.json
+```

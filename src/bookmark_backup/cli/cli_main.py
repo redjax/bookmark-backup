@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+from pathlib import Path
 import sys
 
 log = logging.getLogger(__name__)
@@ -10,13 +11,15 @@ from bookmark_backup import finder
 from bookmark_backup.core import detect_env
 from bookmark_backup.core.validators import validate_browser, validate_os_type
 from bookmark_backup.domain.Bookmarks import (
-    BookmarksFile,
     ChromeBookmarksFile,
     EdgeBookmarksFile,
     VivaldiBookmarksFile,
 )
 
+
 def backup(browser: str, dest: str, overwrite: bool):
+    dest = Path(str(dest)).expanduser() if "~" in str(dest) else Path(str(dest))
+
     # Backup functionality (not yet implemented)
     match browser:
         case "vivaldi":
